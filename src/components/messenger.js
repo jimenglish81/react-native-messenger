@@ -14,8 +14,18 @@ export default class Messenger extends Component {
     super(props);
     this.state = {
       messages: [],
-      dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+      dataSource: ds,
     };
+  }
+
+  componentWillMount() {
+  }
+
+  _send() {
+    // firebase
+    this.setState({
+      messages: [...this.state.messages, this.state.message],
+    });
   }
 
   render() {
@@ -31,7 +41,7 @@ export default class Messenger extends Component {
   renderMessages() {
     return (
       <ListView
-        dataSource={this.state.dataSource}
+        dataSource={this.state.dataSource.cloneWithRows(this.state.messages)}
         renderRow={(rowData) => <Text>{rowData}</Text>}
       />
     );
@@ -41,10 +51,15 @@ export default class Messenger extends Component {
     return (
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input} />
+          placeholder="Add message..."
+          style={styles.input}
+          value={this.state.message}
+          onChangeText={(message) => this.setState({ message })}
+          onSubmitEditing={() => this._send()} />
         <Btn
           text={'Send'}
-          style={styles.sendBtn} />
+          style={styles.sendBtn}
+          onPress={() => this._send()} />
       </View>
     );
   }

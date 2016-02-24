@@ -3,13 +3,16 @@ import React, {
   StyleSheet,
   Navigator,
 } from 'react-native';
-import Messenger from './components/messenger';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addMessage } from '../actions';
+import Messenger from '../components/messenger';
 
 export const ROUTES = {
   messenger: Messenger,
 };
 
-export default class Main extends Component {
+export default class App extends Component {
   renderScene(route, navigator) {
     const Component = ROUTES[route.name];
     return (
@@ -28,6 +31,18 @@ export default class Main extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    message: state.myMessage,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addMessage }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(App);
 
 const styles = StyleSheet.create({
   container: {
