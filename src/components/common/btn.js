@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   btnText: {
     flex: 1,
     alignSelf: 'center',
-    fontSize: 20,
+    fontSize: 16,
+    textAlign: 'center',
   },
 });

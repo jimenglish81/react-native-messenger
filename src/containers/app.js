@@ -42,7 +42,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ addMessage }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 const styles = StyleSheet.create({
   container: {
