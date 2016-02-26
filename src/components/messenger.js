@@ -22,10 +22,17 @@ export default class Messenger extends Component {
   componentWillMount() {
   }
 
+  onChangeText(message) {
+    this.state.setState({
+      message,
+    });
+  }
+
   _send() {
     // firebase
     this.setState({
       messages: [...this.state.messages, this.state.message],
+      message: '',
     });
   }
 
@@ -53,7 +60,6 @@ export default class Messenger extends Component {
   renderMessages() {
     return (
       <ListView
-
         dataSource={this.state.dataSource.cloneWithRows(this.state.messages)}
         renderRow={(rowData) => <Message text={rowData} />}
       />
@@ -67,10 +73,10 @@ export default class Messenger extends Component {
           placeholder="Add message..."
           style={styles.input}
           value={this.state.message}
-          onChangeText={(message) => this.setState({ message })}
+          onChangeText={(message) => this.onChangeText(message))}
           onSubmitEditing={() => this._send()} />
         <Btn
-          text={'Send'}
+          text={'send'}
           style={styles.sendBtn}
           onPress={() => this._send()} />
       </View>
@@ -88,12 +94,13 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: 'yellow',
+    marginBottom: 10,
   },
   headerText: {
     color: '#33A1C9',
     alignSelf: 'center',
     flex: 1,
-        textAlign: 'center',
+    textAlign: 'center',
   },
   inputContainer: {
     height: 50,

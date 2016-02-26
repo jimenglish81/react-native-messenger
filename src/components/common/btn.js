@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   btnText: {
-    flex: 1,
     alignSelf: 'center',
     fontSize: 16,
     textAlign: 'center',
