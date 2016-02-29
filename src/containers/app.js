@@ -6,13 +6,17 @@ import React, {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addMessage } from '../actions';
-import Messenger from '../components/messenger';
+import Login from './authentication/login';
+import SignUp from './authentication/signup';
+import Messenger from './messenger';
 
 export const ROUTES = {
+  login: Login,
+  signup: SignUp,
   messenger: Messenger,
 };
 
-export default class App extends Component {
+class App extends Component {
   renderScene(route, navigator) {
     const Component = ROUTES[route.name];
     return (
@@ -24,13 +28,19 @@ export default class App extends Component {
     return (
       <Navigator
         style={styles.container}
-        initialRoute={{ name: 'messenger' }}
+        initialRoute={{ name: 'login' }}
         renderScene={(...args) => this.renderScene(...args)}
         configureScene={() => Navigator.SceneConfigs.FloatFromRight }
         />
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 function mapStateToProps(state) {
   return {
@@ -43,9 +53,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

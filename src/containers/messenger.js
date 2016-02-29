@@ -6,8 +6,10 @@ import React, {
   TextInput,
   ListView
 } from 'react-native';
-import Btn from './common/btn';
-import Message from './message';
+import Btn from '../components/common/btn';
+import Message from '../components/message';
+import Firebase from 'firebase';
+let ref = new Firebase('https://crackling-torch-4917.firebaseio.com/');
 
 export default class Messenger extends Component {
   constructor(props) {
@@ -20,10 +22,20 @@ export default class Messenger extends Component {
   }
 
   componentWillMount() {
+    ref.createUser({
+      email    : "jim@firebase.com",
+      password : "password"
+    }, function(error, userData) {
+      if (error) {
+        console.log("Error creating user:", error);
+      } else {
+        console.log("Successfully created user account with uid:", userData.uid);
+      }
+    });
   }
 
   onChangeText(message) {
-    this.state.setState({
+    this.setState({
       message,
     });
   }
@@ -73,7 +85,7 @@ export default class Messenger extends Component {
           placeholder="Add message..."
           style={styles.input}
           value={this.state.message}
-          onChangeText={(message) => this.onChangeText(message))}
+          onChangeText={(message) => this.onChangeText(message)}
           onSubmitEditing={() => this._send()} />
         <Btn
           text={'send'}

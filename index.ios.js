@@ -1,22 +1,6 @@
 import React, {
-  AppRegistry,
-  Component
+  AppRegistry
 } from 'react-native';
-import { Provider } from 'react-redux/native';
-import { createStore } from 'redux';
-import reducers from './src/reducers';
-import App from './src/containers/app';
+import App from './src';
 
-const store = createStore(reducers);
-
-class Other extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        {() => <App />}
-      </Provider>
-    );
-  }
-}
-
-AppRegistry.registerComponent('reactNativeMessenger', () => Other);
+AppRegistry.registerComponent('reactNativeMessenger', () => App);

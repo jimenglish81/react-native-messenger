@@ -1,6 +1,6 @@
 import React, {
   AppRegistry
 } from 'react-native';
-import Main from './src/main';
+import App from './src';
 
-AppRegistry.registerComponent('reactNativeMessenger', () => Main);
+AppRegistry.registerComponent('reactNativeMessenger', () => App);

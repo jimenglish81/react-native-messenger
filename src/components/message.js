@@ -16,8 +16,8 @@ export default class Message extends Component {
     }
 
     return momentified.calendar();
-
   }
+
   render() {
     return (
       <View style={styles.bubble}>
