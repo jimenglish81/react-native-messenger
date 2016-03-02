@@ -6,7 +6,7 @@ import React, {
   TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
-import { signUp } from '../../actions';
+import { signUp } from '../../actions/index';
 import Btn from '../../components/common/btn';
 
 class SignUp extends Component {
@@ -67,7 +67,7 @@ class SignUp extends Component {
       });
     } else {
       this.props.signUp(email, password)
-        .promise.then(() => {
+        .payload.promise.then(() => {
           this.props.navigator.immediatelyResetRouteStack([{ name: 'messenger' }]);
         }, (err) => {
           this.setState({

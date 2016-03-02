@@ -6,7 +6,7 @@ import React, {
   TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
-import { login } from '../../actions';
+import { login } from '../../actions/index';
 import Btn from '../../components/common/btn';
 
 class Login extends Component {
@@ -50,7 +50,7 @@ class Login extends Component {
   onLoginPress() {
     const { email, password } = this.state;
     this.props.login(email, password)
-      .promise.then(() => {
+      .payload.promise.then(() => {
         this.props.navigator.immediatelyResetRouteStack([{ name: 'messenger' }]);
       }, (err) => {
         this.setState({
@@ -85,4 +85,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { login })(Login);
+function mapStateToProps(state) {
+  return { user: state.user };
+}
+
+export default connect(mapStateToProps, { login })(Login);

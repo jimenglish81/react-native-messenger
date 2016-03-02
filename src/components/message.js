@@ -4,20 +4,8 @@ import React, {
   Text,
   View
 } from 'react-native';
-import moment from 'moment';
-const now = Date.now();
 
 export default class Message extends Component {
-  getDate() {
-    const { date } = this.props;
-    let momentified = moment(date);
-    if (momentified.isSame(now, 'day')) {
-      return momentified.fromNow();
-    }
-
-    return momentified.calendar();
-  }
-
   render() {
     return (
       <View style={styles.bubble}>

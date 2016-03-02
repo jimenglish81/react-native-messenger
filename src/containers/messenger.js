@@ -8,8 +8,6 @@ import React, {
 } from 'react-native';
 import Btn from '../components/common/btn';
 import Message from '../components/message';
-import Firebase from 'firebase';
-let ref = new Firebase('https://crackling-torch-4917.firebaseio.com/');
 
 export default class Messenger extends Component {
   constructor(props) {
@@ -19,19 +17,6 @@ export default class Messenger extends Component {
       messages: [],
       dataSource,
     };
-  }
-
-  componentWillMount() {
-    ref.createUser({
-      email    : "jim@firebase.com",
-      password : "password"
-    }, function(error, userData) {
-      if (error) {
-        console.log("Error creating user:", error);
-      } else {
-        console.log("Successfully created user account with uid:", userData.uid);
-      }
-    });
   }
 
   onChangeText(message) {
