@@ -6,10 +6,12 @@ import React, {
   TextInput,
   ListView
 } from 'react-native';
+import { connect } from 'react-redux';
+import { addMessage, addChat } from '../actions/index';
 import Btn from '../components/common/btn';
 import Message from '../components/message';
 
-export default class Messenger extends Component {
+class Messenger extends Component {
   constructor(props) {
     const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     super(props);
@@ -17,6 +19,10 @@ export default class Messenger extends Component {
       messages: [],
       dataSource,
     };
+  }
+
+  componentWillMount() {
+    this.props.addChat(this.props.user.uid, 'egg');
   }
 
   onChangeText(message) {
@@ -122,3 +128,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 });
+
+function mapStateToProps(state) {
+  return { user: state.user };
+}
+
+export default connect(mapStateToProps, { addMessage, addChat })(Messenger);
