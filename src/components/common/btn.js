@@ -10,7 +10,7 @@ export default class Btn extends Component {
     return (
       <TouchableHighlight
         style={styles.btn}
-        underlayColor={'gray'}
+        underlayColor={'#CCC'}
         onPress={this.props.onPress}>
         <Text style={styles.btnText}>
           {this.props.text}
@@ -22,17 +22,17 @@ export default class Btn extends Component {
 
 const styles = StyleSheet.create({
   btn: {
+    backgroundColor: '#1C86EE',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 5,
-    padding: 5,
-    borderColor: 'black',
-    marginTop: 5,
+    padding: 10,
+    borderColor: '#fff',
   },
   btnText: {
     alignSelf: 'center',
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center',
+    color: '#fff',
   },
 });

@@ -3,11 +3,14 @@ import React, {
   StyleSheet,
   Text,
   View,
-  TextInput
+  TextInput,
+  Image,
+  TouchableHighlight
 } from 'react-native';
 import { connect } from 'react-redux';
 import { login } from '../../actions/index';
 import Btn from '../../components/common/btn';
+import Logo from '../../components/logo';
 
 class Login extends Component {
   constructor(props) {
@@ -22,27 +25,38 @@ class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>
-          Sign in.
-        </Text>
-        <Text style={styles.label}>
-          Email:
-        </Text>
-        <TextInput
-          value={this.state.email}
-          onChangeText={(email) => this.setState({ email })}
-          style={styles.input} />
-        <Text style={styles.label}>
-          Password:
-        </Text>
-        <TextInput
-          value={this.state.password}
-          onChangeText={(password) => this.setState({ password })}
-          secureTextEntry={true}
-          style={styles.input} />
-        <Text style={styles.label}>{this.state.errorMsg}</Text>
-        <Btn text={'Login'} onPress={() => this.onLoginPress()} />
-        <Btn text={'I need an account...'} onPress={() => this.onSignUpPress()} />
+        <View style={styles.logoContainer}>
+          <Logo />
+        </View>
+        <View style={styles.loginContainer}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={this.state.email}
+              onChangeText={(email) => this.setState({ email })}
+              placeholder={'Email'}
+              style={styles.input} />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={this.state.password}
+              onChangeText={(password) => this.setState({ password })}
+              secureTextEntry={true}
+              placeholder={'Password'}
+              style={styles.input} />
+          </View>
+          <TouchableHighlight
+            style={styles.signup}
+            underlayColor={'transparent'}
+            onPress={() => this.onSignUpPress()}>
+            <Text style={styles.signupText}>
+              {'Don\'t have an account? sign up'}
+            </Text>
+          </TouchableHighlight>
+          <Text style={styles.errorMsg}>{this.state.errorMsg}</Text>
+          <View style={styles.btnContainer}>
+            <Btn text={'Login'} onPress={() => this.onLoginPress()} />
+          </View>
+        </View>
       </View>
     );
   }
@@ -67,21 +81,47 @@ class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'transparent',
+  },
+  logoContainer: {
+    flex: 3,
+    backgroundColor: '#1c86ee',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  input: {
-    padding: 4,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    margin: 5,
-    width: 200,
-    alignSelf: 'center',
+  loginContainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
   },
-  label: {
-    fontSize: 18,
+  inputContainer: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    height: 40,
+  },
+  input: {
+    position: 'absolute',
+    left: 20,
+    top: 10,
+    right: 20,
+    height: 20,
+    fontSize: 14,
+  },
+  signup: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    padding: 5,
+  },
+  signupText: {
+    color: '#ccc',
+  },
+  btnContainer: {
+    marginTop: 10,
+  },
+  errorMsg: {
+    fontSize: 14,
+    color: '#ff3232',
   },
 });
 

@@ -22,7 +22,7 @@ class Messenger extends Component {
   }
 
   componentWillMount() {
-    this.props.addChat(this.props.user.uid, 'egg');
+    // this.props.addChat(this.props.user.uid, 'egg');
   }
 
   onChangeText(message) {
@@ -33,8 +33,9 @@ class Messenger extends Component {
 
   _send() {
     // firebase
+    let { message, messages } = this.state;
     this.setState({
-      messages: [...this.state.messages, this.state.message],
+      messages: [...messages, { message, date: new Date() }],
       message: '',
     });
   }
@@ -64,7 +65,7 @@ class Messenger extends Component {
     return (
       <ListView
         dataSource={this.state.dataSource.cloneWithRows(this.state.messages)}
-        renderRow={(rowData) => <Message text={rowData} />}
+        renderRow={(rowData) => <Message {...rowData} />}
       />
     );
   }
@@ -78,10 +79,11 @@ class Messenger extends Component {
           value={this.state.message}
           onChangeText={(message) => this.onChangeText(message)}
           onSubmitEditing={() => this._send()} />
-        <Btn
-          text={'send'}
-          style={styles.sendBtn}
-          onPress={() => this._send()} />
+        <View style={styles.btnContainer}>
+          <Btn
+            text={'send'}
+            onPress={() => this._send()} />
+        </View>
       </View>
     );
   }
@@ -92,15 +94,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    height: 45,
+    height: 50,
     flexDirection: 'row',
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: 'yellow',
+    backgroundColor: '#1c86ee',
     marginBottom: 10,
   },
   headerText: {
-    color: '#33A1C9',
+    color: '#fff',
     alignSelf: 'center',
     flex: 1,
     textAlign: 'center',
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 50,
     borderTopWidth: 1,
-    borderColor: '#000',
+    borderColor: '#CCC',
     flexDirection: 'row',
     paddingLeft: 10,
     paddingRight: 10,
@@ -117,15 +119,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 48,
     width: 100,
-    backgroundColor: '#FFF',
+    backgroundColor: '#fff',
     flex: 1,
     padding: 0,
     margin: 0,
     fontSize: 14,
   },
-  sendBtn: {
-    marginTop: 10,
-    marginLeft: 10,
+  btnContainer: {
+    marginTop: 5,
+    marginBottom: 5,
   },
 });
 
