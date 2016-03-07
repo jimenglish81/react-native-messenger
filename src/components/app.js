@@ -25,7 +25,7 @@ export default class App extends Component {
     return (
       <Navigator
         style={styles.container}
-        initialRoute={{ name: 'login' }}
+        initialRoute={{ name: 'messenger' }}
         renderScene={(...args) => this.renderScene(...args)}
         configureScene={() => Navigator.SceneConfigs.FloatFromRight}
         />

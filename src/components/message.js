@@ -7,11 +7,29 @@ import React, {
 import { formatDate } from '../utils/date';
 
 export default class Message extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      time: formatDate(props.date),
+    };
+  }
+
+  componentWillMount() {
+    this._tick();
+  }
+
+  _tick() {
+    this.setState({
+      time: formatDate(this.props.date),
+    });
+    this._timeout = window.setTimeout(() => this._tick(), 5000);
+  }
+
   render() {
     return (
       <View style={styles.messageContainer}>
         <View style={styles.timeContainer}>
-          <Text style={styles.timeText}>{formatDate(this.props.date)}</Text>
+          <Text style={styles.timeText}>{this.state.time}</Text>
         </View>
         <View style={styles.message}>
           <Text style={styles.messageText}>
@@ -20,6 +38,10 @@ export default class Message extends Component {
         </View>
       </View>
     );
+  }
+
+  componentWillUnmount() {
+    window.cancelTimeout(this._timeout);
   }
 }
 
