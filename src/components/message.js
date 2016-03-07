@@ -41,7 +41,7 @@ export default class Message extends Component {
   }
 
   componentWillUnmount() {
-    window.cancelTimeout(this._timeout);
+    window.clearTimeout(this._timeout);
   }
 }
 
