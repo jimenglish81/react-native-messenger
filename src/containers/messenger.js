@@ -34,6 +34,9 @@ class Messenger extends Component {
   _send() {
     // firebase
     let { message, messages } = this.state;
+    if (message === '') {
+      return;
+    }
     this.setState({
       messages: [...messages, { message, date: new Date() }],
       message: '',
@@ -65,7 +68,7 @@ class Messenger extends Component {
     return (
       <ListView
         dataSource={this.state.dataSource.cloneWithRows(this.state.messages)}
-        renderRow={(rowData) => <Message {...rowData} />}
+        renderRow={(rowData, sectionId, rowId) => <Message {...rowData} alignment={rowId % 2 ? 'left' : 'right'} />}
       />
     );
   }

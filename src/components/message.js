@@ -26,14 +26,24 @@ export default class Message extends Component {
   }
 
   render() {
+    const {
+      alignment,
+      message,
+    } = this.props;
+    const alignStyle = {
+      alignItems: alignment === 'left' ? 'flex-start' : 'flex-end',
+    };
+    const messageStyle = {
+      backgroundColor: alignment === 'left' ? '#c6e2ff' : '#e6e6eb',
+    };
     return (
-      <View style={styles.messageContainer}>
-        <View style={styles.timeContainer}>
+      <View style={[styles.messageContainer, styles[alignment]]}>
+        <View style={[styles.timeContainer, alignStyle]}>
           <Text style={styles.timeText}>{this.state.time}</Text>
         </View>
-        <View style={styles.message}>
+        <View style={[styles.message, alignStyle, messageStyle]}>
           <Text style={styles.messageText}>
-            {this.props.message}
+            {message}
           </Text>
         </View>
       </View>
@@ -57,15 +67,19 @@ const styles = StyleSheet.create({
      paddingRight: 15,
      paddingBottom: 10,
      paddingTop: 10,
-     backgroundColor: '#E6E6EB',
    },
    messageText: {
      color: '#000',
      fontSize: 14,
    },
+   left: {
+     marginRight: 70,
+   },
+   right: {
+     marginLeft: 70,
+   },
    timeContainer: {
      justifyContent: 'center',
-     alignItems: 'flex-end',
      padding: 5,
    },
    timeText: {
