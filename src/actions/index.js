@@ -3,12 +3,13 @@ import Fireproof from 'fireproof';
 
 const firebase = new Firebase('https://crackling-torch-4917.firebaseio.com/');
 const fireproof = new Fireproof(firebase);
-const rooms = fireproof.child('chats');
+const rooms = fireproof.child('rooms');
 
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const LOGIN = 'LOGIN';
 export const SIGN_UP = 'SIGN_UP';
-export const ADD_CHAT = 'ADD_CHAT';
+export const ADD_ROOM = 'ADD_ROOM';
+export const FETCH_ROOMS = 'FETCH_ROOMS';
 
 export function login(email, password) {
   return {
@@ -35,14 +36,24 @@ export function addMessage() {
   };
 }
 
-export function addChat(uid, name) {
+export function fetchRooms() {
   return {
-    type: ADD_CHAT,
+    type: FETCH_ROOMS,
     payload: {
-      promise: rooms.push().set({
-        uid,
-        name,
-      }),
+      promise: rooms.once('value'),
+    },
+  };
+}
+
+export function addRoom(uid, name) {
+  rooms.push({
+    uid,
+    name,
+  });
+  return {
+    type: ADD_ROOM,
+    payload: {
+      promise: rooms.on('child_added'),
     },
   };
 }

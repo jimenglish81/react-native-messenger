@@ -7,8 +7,9 @@ import React, {
   ListView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { addMessage, addChat } from '../actions/index';
+import { addMessage } from '../actions/index';
 import Btn from '../components/common/btn';
+import Header from '../components/common/header';
 import Message from '../components/message';
 
 class Messenger extends Component {
@@ -47,7 +48,7 @@ class Messenger extends Component {
     return (
       <View
         style={styles.container}>
-        {this.renderHeader()}
+        <Header />
         {this.renderMessages()}
         {this.renderInput()}
       </View>
@@ -96,20 +97,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  headerContainer: {
-    height: 60,
-    flexDirection: 'row',
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#1c86ee',
-    marginBottom: 10,
-  },
-  headerText: {
-    color: '#fff',
-    alignSelf: 'center',
-    flex: 1,
-    textAlign: 'center',
-  },
   inputContainer: {
     height: 50,
     borderTopWidth: 1,
@@ -134,8 +121,11 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
-  return { user: state.user };
+function mapStateToProps({ user, messages }) {
+  return {
+    user,
+    messages,
+  };
 }
 
-export default connect(mapStateToProps, { addMessage, addChat })(Messenger);
+export default connect(mapStateToProps, { addMessage })(Messenger);

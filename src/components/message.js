@@ -6,6 +6,17 @@ import React, {
 } from 'react-native';
 import { formatDate } from '../utils/date';
 
+export const THEMES = {
+  BLUE_SLATE: {
+    backgroundColor: '#c6e2ff',
+    color: '#000',
+  },
+  GREY: {
+    backgroundColor: '#e6e6eb',
+    color: '#000',
+  },
+};
+
 export default class Message extends Component {
   constructor(props) {
     super(props);
@@ -27,14 +38,19 @@ export default class Message extends Component {
 
   render() {
     const {
-      alignment,
+      alignment='right',
+      theme=THEMES.GREY,
       message,
     } = this.props;
+    const { backgroundColor, color } = theme;
     const alignStyle = {
       alignItems: alignment === 'left' ? 'flex-start' : 'flex-end',
     };
     const messageStyle = {
-      backgroundColor: alignment === 'left' ? '#c6e2ff' : '#e6e6eb',
+      backgroundColor,
+    };
+    const messageTextStyle = {
+      color,
     };
     return (
       <View style={[styles.messageContainer, styles[alignment]]}>
@@ -42,7 +58,7 @@ export default class Message extends Component {
           <Text style={styles.timeText}>{this.state.time}</Text>
         </View>
         <View style={[styles.message, alignStyle, messageStyle]}>
-          <Text style={styles.messageText}>
+          <Text style={[styles.messageText, messageTextStyle]}>
             {message}
           </Text>
         </View>
@@ -69,7 +85,6 @@ const styles = StyleSheet.create({
      paddingTop: 10,
    },
    messageText: {
-     color: '#000',
      fontSize: 14,
    },
    left: {

@@ -6,11 +6,13 @@ import React, {
 import Login from '../containers/authentication/login';
 import SignUp from '../containers/authentication/signup';
 import Messenger from '../containers/messenger';
+import Rooms from '../containers/rooms';
 
 export const ROUTES = {
   login: Login,
   signup: SignUp,
   messenger: Messenger,
+  rooms: Rooms,
 };
 
 export default class App extends Component {
@@ -25,7 +27,7 @@ export default class App extends Component {
     return (
       <Navigator
         style={styles.container}
-        initialRoute={{ name: 'messenger' }}
+        initialRoute={{ name: 'rooms' }}
         renderScene={(...args) => this.renderScene(...args)}
         configureScene={() => Navigator.SceneConfigs.FloatFromRight}
         />
