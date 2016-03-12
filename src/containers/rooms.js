@@ -41,6 +41,7 @@ class Rooms extends Component {
     });
     this.props.addRoom('egg', name)
       .payload.promise.then(() => {
+        console.log(arguments);
         // TODO - need to add Room (in reducer)
         //this.props.navigator.push({ name: 'messenger' });
       });
@@ -83,7 +84,6 @@ class Rooms extends Component {
       </View>
     );
   }
-
 }
 
 const styles = StyleSheet.create({

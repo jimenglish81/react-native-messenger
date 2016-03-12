@@ -1,24 +1,21 @@
 import React, {
-  Component,
   StyleSheet,
   Text,
   TouchableHighlight,
 } from 'react-native';
 
-export default class Btn extends Component {
-  render() {
-    return (
-      <TouchableHighlight
-        style={styles.btn}
-        underlayColor={'#CCC'}
-        onPress={this.props.onPress}>
-        <Text style={styles.btnText}>
-          {this.props.text}
-        </Text>
-      </TouchableHighlight>
-    );
-  }
-}
+export default ({ onPress, text }) => {
+  return (
+    <TouchableHighlight
+      style={styles.btn}
+      underlayColor={'#ccc'}
+      onPress={onPress}>
+      <Text style={styles.btnText}>
+        {text}
+      </Text>
+    </TouchableHighlight>
+  );
+};
 
 const styles = StyleSheet.create({
   btn: {

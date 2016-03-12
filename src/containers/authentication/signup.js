@@ -81,7 +81,7 @@ class SignUp extends Component {
     } else {
       this.props.signUp(email, password)
         .payload.promise.then(() => {
-          this.props.navigator.immediatelyResetRouteStack([{ name: 'messenger' }]);
+          this.props.navigator.immediatelyResetRouteStack([{ name: 'rooms' }]);
         }, (err) => {
           this.setState({
             errorMsg: 'There has been a problem.',
@@ -93,7 +93,6 @@ class SignUp extends Component {
   onLoginPress() {
     this.props.navigator.pop();
   }
-
 }
 
 const styles = StyleSheet.create({

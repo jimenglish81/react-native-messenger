@@ -70,7 +70,7 @@ export function addMessage(userId, roomId, message) {
                     .child(roomId)
                     .child('messages');
   messages.push({
-    //userId,
+    userId,
     message,
     time: (new Date()).getTime(),
   });

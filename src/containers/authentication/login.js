@@ -65,7 +65,7 @@ class Login extends Component {
     const { email, password } = this.state;
     this.props.login(email, password)
       .payload.promise.then(() => {
-        this.props.navigator.immediatelyResetRouteStack([{ name: 'messenger' }]);
+        this.props.navigator.immediatelyResetRouteStack([{ name: 'rooms' }]);
       }, (err) => {
         this.setState({
           errorMsg: 'There has been a problem.',

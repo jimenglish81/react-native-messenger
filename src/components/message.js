@@ -5,17 +5,7 @@ import React, {
   View
 } from 'react-native';
 import { formatDate } from '../utils/date';
-
-export const THEMES = {
-  BLUE_SLATE: {
-    backgroundColor: '#c6e2ff',
-    color: '#000',
-  },
-  GREY: {
-    backgroundColor: '#e6e6eb',
-    color: '#000',
-  },
-};
+import { THEMES } from '../utils/message-themes';
 
 export default class Message extends Component {
   constructor(props) {

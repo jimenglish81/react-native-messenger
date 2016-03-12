@@ -11,6 +11,9 @@ import { addMessage, fetchMessages } from '../actions/index';
 import Btn from '../components/common/btn';
 import Header from '../components/common/header';
 import Message from '../components/message';
+import { THEMES } from '../utils/message-themes';
+
+const availableThemes = Object.keys(THEMES).filter((theme) => theme !== 'GREY');
 
 class Messenger extends Component {
   constructor(props) {
@@ -18,11 +21,41 @@ class Messenger extends Component {
     super(props);
     this.state = {
       dataSource,
+      themes: {},
     };
   }
 
   componentWillMount() {
     this.props.fetchMessages(this.props.roomId);
+  }
+
+  componentWillReceiveProps(props) {
+    const themes = this.state.themes;
+    const { uid } = this.props.user;
+    const users = props.messages.reduce((users, { userId }) => {
+      if (!users.includes(userId)) {
+        users.push(userId);
+      }
+      return users;
+    }, []);
+
+    let themeIndex = 0;
+    for (let i = 0, l = users.length; i < l; i++) {
+      let userId = users[i];
+      if (themes[userId]) {
+        continue;
+      }
+      if (userId === uid) {
+        themes[userId] = 'GREY';
+      } else {
+        themes[userId] = availableThemes[themeIndex % availableThemes.length];
+        themeIndex++;
+      }
+    }
+
+    this.setState({
+      themes,
+    })
   }
 
   onChangeText(message) {
@@ -31,8 +64,7 @@ class Messenger extends Component {
     });
   }
 
-  _send() {
-    // firebase
+  _sendMessage() {
     let { message } = this.state;
     const { user, roomId } = this.props;
     if (message === '') {
@@ -42,27 +74,16 @@ class Messenger extends Component {
       message: '',
     });
 
-    this.props.addMessage(user.userId, roomId, message);
+    this.props.addMessage(user.uid, roomId, message);
   }
 
-  render() {
-    return (
-      <View
-        style={styles.container}>
-        <Header />
-        {this.renderMessages()}
-        {this.renderInput()}
-      </View>
-    );
-  }
+  renderMessage(message) {
+    const isOwnMessage = (message.userId === this.props.user.uid);
+    const alignment = isOwnMessage ? 'right' : 'left';
+    const theme = this.state.themes[message.userId];
 
-  renderHeader() {
     return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>
-          Messenger
-        </Text>
-      </View>
+      <Message {...message} alignment={alignment} theme={THEMES[theme]} />
     );
   }
 
@@ -70,7 +91,7 @@ class Messenger extends Component {
     return (
       <ListView
         dataSource={this.state.dataSource.cloneWithRows(this.props.messages)}
-        renderRow={(rowData, sectionId, rowId) => <Message {...rowData} alignment={rowId % 2 ? 'left' : 'right'} />}
+        renderRow={(rowData) => this.renderMessage(rowData)}
       />
     );
   }
@@ -83,12 +104,23 @@ class Messenger extends Component {
           style={styles.input}
           value={this.state.message}
           onChangeText={(message) => this.onChangeText(message)}
-          onSubmitEditing={() => this._send()} />
+          onSubmitEditing={() => this._sendMessage()} />
         <View style={styles.btnContainer}>
           <Btn
             text={'send'}
-            onPress={() => this._send()} />
+            onPress={() => this._sendMessage()} />
         </View>
+      </View>
+    );
+  }
+
+  render() {
+    return (
+      <View
+        style={styles.container}>
+        <Header />
+        {this.renderMessages()}
+        {this.renderInput()}
       </View>
     );
   }
