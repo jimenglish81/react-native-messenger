@@ -11,7 +11,12 @@ export default class Room extends Component {
   }
 
   _onPress() {
-    this.props.navigator.push({ name: 'messenger' });
+    this.props.navigator.push({
+      name: 'messenger',
+      config: {
+        roomId: this.props.roomId,
+      },
+    });
   }
 
   render() {
@@ -20,7 +25,7 @@ export default class Room extends Component {
         onPress={() => this._onPress()}
         style={styles.room}>
         <Text style={styles.roomText}>
-          {this.props.room.name}
+          {this.props.name}
         </Text>
       </TouchableOpacity>
     );

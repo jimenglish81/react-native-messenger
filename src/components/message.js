@@ -21,7 +21,7 @@ export default class Message extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      time: formatDate(props.date),
+      time: formatDate(props.time),
     };
   }
 
@@ -31,7 +31,7 @@ export default class Message extends Component {
 
   _tick() {
     this.setState({
-      time: formatDate(this.props.date),
+      time: formatDate(this.props.time),
     });
     this._timeout = window.setTimeout(() => this._tick(), 5000);
   }

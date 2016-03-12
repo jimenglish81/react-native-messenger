@@ -7,7 +7,7 @@ import React, {
   ListView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { addMessage } from '../actions/index';
+import { addMessage, fetchMessages } from '../actions/index';
 import Btn from '../components/common/btn';
 import Header from '../components/common/header';
 import Message from '../components/message';
@@ -17,13 +17,12 @@ class Messenger extends Component {
     const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     super(props);
     this.state = {
-      messages: [],
       dataSource,
     };
   }
 
   componentWillMount() {
-    // this.props.addChat(this.props.user.uid, 'egg');
+    this.props.fetchMessages(this.props.roomId);
   }
 
   onChangeText(message) {
@@ -34,14 +33,16 @@ class Messenger extends Component {
 
   _send() {
     // firebase
-    let { message, messages } = this.state;
+    let { message } = this.state;
+    const { user, roomId } = this.props;
     if (message === '') {
       return;
     }
     this.setState({
-      messages: [...messages, { message, date: new Date() }],
       message: '',
     });
+
+    this.props.addMessage(user.userId, roomId, message);
   }
 
   render() {
@@ -68,7 +69,7 @@ class Messenger extends Component {
   renderMessages() {
     return (
       <ListView
-        dataSource={this.state.dataSource.cloneWithRows(this.state.messages)}
+        dataSource={this.state.dataSource.cloneWithRows(this.props.messages)}
         renderRow={(rowData, sectionId, rowId) => <Message {...rowData} alignment={rowId % 2 ? 'left' : 'right'} />}
       />
     );
@@ -128,4 +129,4 @@ function mapStateToProps({ user, messages }) {
   };
 }
 
-export default connect(mapStateToProps, { addMessage })(Messenger);
+export default connect(mapStateToProps, { addMessage, fetchMessages })(Messenger);

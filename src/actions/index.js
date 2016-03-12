@@ -5,11 +5,12 @@ const firebase = new Firebase('https://crackling-torch-4917.firebaseio.com/');
 const fireproof = new Fireproof(firebase);
 const rooms = fireproof.child('rooms');
 
-export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const LOGIN = 'LOGIN';
 export const SIGN_UP = 'SIGN_UP';
 export const ADD_ROOM = 'ADD_ROOM';
 export const FETCH_ROOMS = 'FETCH_ROOMS';
+export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const FETCH_MESSAGES = 'FETCH_MESSAGES';
 
 export function login(email, password) {
   return {
@@ -29,31 +30,54 @@ export function signUp(email, password) {
   };
 }
 
-export function addMessage() {
-  return {
-    type: ADD_MESSAGE,
-    payload: 'something',
-  };
-}
-
 export function fetchRooms() {
   return {
     type: FETCH_ROOMS,
     payload: {
-      promise: rooms.once('value'),
+      promise: rooms.orderByKey().once('value'),
     },
   };
 }
 
-export function addRoom(uid, name) {
+export function addRoom(userId, name) {
   rooms.push({
-    uid,
+    userId,
     name,
   });
   return {
     type: ADD_ROOM,
     payload: {
-      promise: rooms.on('child_added'),
+      promise: rooms.once('child_added'),
+    },
+  };
+}
+
+export function fetchMessages(roomId) {
+  const messages = rooms
+                    .child(roomId)
+                    .child('messages')
+                    .orderByValue('time');
+  return {
+    type: FETCH_MESSAGES,
+    payload: {
+      promise: messages.once('value'),
+    },
+  };
+}
+
+export function addMessage(userId, roomId, message) {
+  const messages = rooms
+                    .child(roomId)
+                    .child('messages');
+  messages.push({
+    //userId,
+    message,
+    time: (new Date()).getTime(),
+  });
+  return {
+    type: ADD_MESSAGE,
+    payload: {
+      promise: messages.once('child_added'),
     },
   };
 }

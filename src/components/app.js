@@ -19,7 +19,7 @@ export default class App extends Component {
   renderScene(route, navigator) {
     const Component = ROUTES[route.name];
     return (
-      <Component navigator={navigator} route={route} />
+      <Component navigator={navigator} route={route} {...route.config} />
     );
   }
 

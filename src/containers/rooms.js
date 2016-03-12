@@ -33,6 +33,12 @@ class Rooms extends Component {
 
   _addRoom() {
     const { name, user } = this.state;
+    if (name === '') {
+      return;
+    }
+    this.setState({
+      name: '',
+    });
     this.props.addRoom('egg', name)
       .payload.promise.then(() => {
         // TODO - need to add Room (in reducer)
@@ -44,7 +50,7 @@ class Rooms extends Component {
     return (
       <ListView
         dataSource={this.state.dataSource.cloneWithRows(this.props.rooms)}
-        renderRow={(rowData) => <Room room={rowData} navigator={this.props.navigator} />}
+        renderRow={(rowData) => <Room {...rowData} navigator={this.props.navigator} />}
       />
     );
   }
