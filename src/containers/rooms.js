@@ -32,14 +32,14 @@ class Rooms extends Component {
   }
 
   _addRoom() {
-    const { name, user } = this.state;
+    const { name } = this.state;
     if (name === '') {
       return;
     }
     this.setState({
       name: '',
     });
-    this.props.addRoom(user.userId, name);
+    this.props.addRoom(this.props.user.uid, name);
   }
 
   renderRooms() {
