@@ -25,7 +25,10 @@ export function signUp(email, password) {
   return {
     type: SIGN_UP,
     payload: {
-      promise: fireproof.createUser({ email, password }),
+      promise: fireproof.createUser({ email, password })
+        .then((response) => {
+          return { ...response, password: { email } };
+        }),
     },
   };
 }
@@ -65,12 +68,13 @@ export function fetchMessages(roomId) {
   };
 }
 
-export function addMessage(userId, roomId, message) {
+export function addMessage({ uid, email }, roomId, message) {
   const messages = rooms
                     .child(roomId)
                     .child('messages');
   messages.push({
-    userId,
+    userId: uid,
+    email,
     message,
     time: (new Date()).getTime(),
   });

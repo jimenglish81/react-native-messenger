@@ -31,8 +31,9 @@ export default class Message extends Component {
       alignment='right',
       theme=THEMES.GREY,
       message,
+      email,
     } = this.props;
-    const { backgroundColor, color } = theme;
+    const { backgroundColor, color, highlightColor } = theme;
     const alignStyle = {
       alignItems: alignment === 'left' ? 'flex-start' : 'flex-end',
     };
@@ -42,12 +43,18 @@ export default class Message extends Component {
     const messageTextStyle = {
       color,
     };
+    const userText = {
+      color: highlightColor,
+    }
     return (
       <View style={[styles.messageContainer, styles[alignment]]}>
         <View style={[styles.timeContainer, alignStyle]}>
           <Text style={styles.timeText}>{this.state.time}</Text>
         </View>
         <View style={[styles.message, alignStyle, messageStyle]}>
+          <View>
+            <Text style={userText}>{email}</Text>
+          </View>
           <Text style={[styles.messageText, messageTextStyle]}>
             {message}
           </Text>
@@ -68,7 +75,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   message: {
-     borderRadius: 15,
+     borderRadius: 25,
      paddingLeft: 15,
      paddingRight: 15,
      paddingBottom: 10,

@@ -74,7 +74,7 @@ class Messenger extends Component {
       message: '',
     });
 
-    this.props.addMessage(user.uid, roomId, message);
+    this.props.addMessage(user, roomId, message);
   }
 
   renderMessage(message) {
