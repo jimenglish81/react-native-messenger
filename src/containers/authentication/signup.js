@@ -71,6 +71,11 @@ class SignUp extends Component {
 
   onSignUpPress() {
     const { email, password, passwordConfirmation } = this.state;
+    const errorCb = (errorMsg) => {
+      this.setState({
+        errorMsg,
+      });
+    };
 
     if (password !== passwordConfirmation) {
       return this.setState({
@@ -80,13 +85,13 @@ class SignUp extends Component {
       });
     } else {
       this.props.signUp(email, password)
-        .payload.promise.then(() => {
-          this.props.navigator.immediatelyResetRouteStack([{ name: 'rooms' }]);
-        }, (err) => {
-          this.setState({
-            errorMsg: 'There has been a problem.',
-          });
-        });
+        .payload.promise.then((response) => {
+          if (!response.error) {
+            this.props.navigator.immediatelyResetRouteStack([{ name: 'rooms' }]);
+          } else {
+            errorCb('Please check your network connection.');
+          }
+        }, () => errorCb('There has been a problem.'));
     }
   }
 

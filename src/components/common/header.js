@@ -1,13 +1,24 @@
 import React, {
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
 
-export default () => {
+export default ({ onBackPress }) => {
+  const backBtn = onBackPress ? (
+    <TouchableOpacity
+      style={styles.backBtn}
+      onPress={onBackPress}>
+      <Text style={[styles.headerText, styles.backBtnText]}>
+        {'<'}
+      </Text>
+    </TouchableOpacity>
+  ) : null;
   return (
     <View style={styles.headerContainer}>
-      <Text style={styles.headerText}>
+      {backBtn}
+      <Text style={[styles.titleText, styles.headerText]}>
         Messenger
       </Text>
     </View>
@@ -25,8 +36,19 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#fff',
+    textAlign: 'center',
     alignSelf: 'center',
     flex: 1,
+  },
+  titleText: {
     textAlign: 'center',
   },
+  backBtn: {
+    alignItems: 'flex-start',
+    height: 60,
+    flexDirection: 'row',
+  },
+  backBtnText: {
+    fontSize: 16,
+  }
 });

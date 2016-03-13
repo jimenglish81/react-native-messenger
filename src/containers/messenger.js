@@ -118,7 +118,7 @@ class Messenger extends Component {
     return (
       <View
         style={styles.container}>
-        <Header />
+        <Header onBackPress={() => this.props.navigator.pop()} />
         {this.renderMessages()}
         {this.renderInput()}
       </View>

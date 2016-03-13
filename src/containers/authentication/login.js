@@ -63,14 +63,19 @@ class Login extends Component {
 
   onLoginPress() {
     const { email, password } = this.state;
-    this.props.login(email, password)
-      .payload.promise.then(() => {
-        this.props.navigator.immediatelyResetRouteStack([{ name: 'rooms' }]);
-      }, (err) => {
-        this.setState({
-          errorMsg: 'There has been a problem.',
-        });
+    const errorCb = (errorMsg) => {
+      this.setState({
+        errorMsg,
       });
+    };
+    this.props.login(email, password)
+      .payload.promise.then((response) => {
+        if (!response.error) {
+          this.props.navigator.immediatelyResetRouteStack([{ name: 'rooms' }]);
+        } else {
+          errorCb('Please check your network connection.');
+        }
+      }, () => errorCb('There has been a problem.'));
   }
 
   onSignUpPress() {
