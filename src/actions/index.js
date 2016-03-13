@@ -9,7 +9,7 @@ export const LOGIN = 'LOGIN';
 export const SIGN_UP = 'SIGN_UP';
 export const ROOM_ADDED = 'ROOM_ADDED';
 export const ENTER_ROOM = 'ENTER_ROOM';
-export const REMOVE_ROOM = 'REMOVE_ROOM';
+export const ROOM_REMOVED = 'ROOM_REMOVED';
 export const MESSAGE_ADDED = 'MESSAGE_ADDED';
 
 export function login(email, password) {
@@ -62,7 +62,7 @@ export function addRoom(userId, name) {
 
 export function removeRoom(roomId) {
   return {
-    type: REMOVE_ROOM,
+    type: ROOM_REMOVED,
     payload: {
       promise: rooms.child(roomId).remove()
         .then(() => {
