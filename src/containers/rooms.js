@@ -6,7 +6,7 @@ import React, {
   TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
-import { addRoom, fetchRooms } from '../actions/index';
+import { addRoom, enterRoom, fetchRooms } from '../actions/index';
 import Header from '../components/common/header';
 import Btn from '../components/common/btn';
 import Room from '../components/room';
@@ -42,12 +42,19 @@ class Rooms extends Component {
     this.props.addRoom(this.props.user.uid, name);
   }
 
+  renderRoom(room) {
+    return (
+      <Room {...room}
+        navigator={this.props.navigator}
+        onPress={(roomId) => this.props.enterRoom(roomId)} />
+    );
+  }
+
   renderRooms() {
     return (
       <ListView
         dataSource={this.state.dataSource.cloneWithRows(this.props.rooms)}
-        renderRow={(rowData) => <Room {...rowData} navigator={this.props.navigator} />}
-      />
+        renderRow={(rowData) => this.renderRoom(rowData)} />
     );
   }
 
@@ -113,4 +120,4 @@ function mapStateToProps({ user, rooms }) {
   return { user, rooms };
 }
 
-export default connect(mapStateToProps, { addRoom, fetchRooms })(Rooms);
+export default connect(mapStateToProps, { addRoom, enterRoom, fetchRooms })(Rooms);

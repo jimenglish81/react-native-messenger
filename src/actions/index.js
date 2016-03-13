@@ -7,10 +7,9 @@ const rooms = fireproof.child('rooms');
 
 export const LOGIN = 'LOGIN';
 export const SIGN_UP = 'SIGN_UP';
-export const ADD_ROOM = 'ADD_ROOM';
-export const FETCH_ROOMS = 'FETCH_ROOMS';
-export const ADD_MESSAGE = 'ADD_MESSAGE';
-export const FETCH_MESSAGES = 'FETCH_MESSAGES';
+export const ROOM_ADDED = 'ROOM_ADDED';
+export const ENTER_ROOM = 'ENTER_ROOM';
+export const MESSAGE_ADDED = 'MESSAGE_ADDED';
 
 export function login(email, password) {
   return {
@@ -34,40 +33,56 @@ export function signUp(email, password) {
 }
 
 export function fetchRooms() {
+  return (dispatch) => {
+    rooms
+      .orderByKey()
+      .on('child_added', (snapshot) => {
+        dispatch(roomAdded({ ...snapshot.val(), roomId: snapshot.key() }));
+      });
+  };
+}
+
+export function roomAdded(payload) {
   return {
-    type: FETCH_ROOMS,
-    payload: {
-      promise: rooms.orderByKey().once('value'),
-    },
+    type: ROOM_ADDED,
+    payload,
   };
 }
 
 export function addRoom(userId, name) {
-  rooms.push({
-    userId,
-    name,
-    date: (new Date()).getTime(),
-  });
+  return () => {
+    rooms.push({
+      userId,
+      name,
+      date: (new Date()).getTime(),
+    });
+  };
+}
 
+export function enterRoom(roomId) {
   return {
-    type: ADD_ROOM,
-    payload: {
-      promise: rooms.once('child_added'),
-    },
+    type: ENTER_ROOM,
+    payload: roomId,
   };
 }
 
 export function fetchMessages(roomId) {
-  const messages = rooms
-                    .child(roomId)
-                    .child('messages')
-                    .orderByValue('time');
+  const room = rooms.child(roomId);
 
+  return (dispatch) => {
+    room
+      .child('messages')
+      .orderByValue('time')
+      .on('child_added', (snapshot) => {
+        dispatch(messageAdded({ ...snapshot.val(), messageId: snapshot.key() } ));
+      });
+  };
+}
+
+export function messageAdded(payload) {
   return {
-    type: FETCH_MESSAGES,
-    payload: {
-      promise: messages.once('value'),
-    },
+    type: MESSAGE_ADDED,
+    payload,
   };
 }
 
@@ -75,16 +90,13 @@ export function addMessage({ uid, email }, roomId, message) {
   const messages = rooms
                     .child(roomId)
                     .child('messages');
-  messages.push({
-    userId: uid,
-    email,
-    message,
-    time: (new Date()).getTime(),
-  });
-  return {
-    type: ADD_MESSAGE,
-    payload: {
-      promise: messages.once('child_added'),
-    },
+
+  return () => {
+    messages.push({
+      userId: uid,
+      email,
+      message,
+      time: (new Date()).getTime(),
+    });
   };
 }
