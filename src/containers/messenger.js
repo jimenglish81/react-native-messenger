@@ -20,6 +20,7 @@ class Messenger extends Component {
     const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     super(props);
     this.state = {
+      message: '',
       dataSource,
       themes: {},
     };
@@ -67,7 +68,7 @@ class Messenger extends Component {
   _sendMessage() {
     let { message } = this.state;
     const { user, roomId } = this.props;
-    if (message === '') {
+    if (message.trim() === '') {
       return;
     }
     this.setState({
