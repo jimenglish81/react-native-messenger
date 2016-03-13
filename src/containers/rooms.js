@@ -6,10 +6,17 @@ import React, {
   TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
-import { addRoom, enterRoom, fetchRooms } from '../actions/index';
+import Swipeout from 'react-native-swipeout';
+import { addRoom, enterRoom, fetchRooms, removeRoom } from '../actions/index';
 import Header from '../components/common/header';
 import Btn from '../components/common/btn';
 import Room from '../components/room';
+
+const deleteBtn = {
+  text: 'Delete',
+  backgroundColor: 'red',
+  underlayColor: 'rgba(1, 0, 0, 0.6)',
+};
 
 class Rooms extends Component {
   constructor(props) {
@@ -43,10 +50,22 @@ class Rooms extends Component {
   }
 
   renderRoom(room) {
+    const { roomId, userId } = room;
+    const ownsRoom = this.props.user.uid === userId;
+    const btns = ownsRoom ? [
+        {
+          ...deleteBtn,
+          onPress: () => this.props.removeRoom(room.roomId),
+        },
+      ] : [];
     return (
-      <Room {...room}
-        navigator={this.props.navigator}
-        onPress={(roomId) => this.props.enterRoom(roomId)} />
+      <Swipeout right={btns}
+        autoClose='true'
+        backgroundColor= 'transparent'>
+        <Room {...room}
+          navigator={this.props.navigator}
+          onPress={(roomId) => this.props.enterRoom(roomId)} />
+        </Swipeout>
     );
   }
 
@@ -120,4 +139,4 @@ function mapStateToProps({ user, rooms }) {
   return { user, rooms };
 }
 
-export default connect(mapStateToProps, { addRoom, enterRoom, fetchRooms })(Rooms);
+export default connect(mapStateToProps, { addRoom, enterRoom, fetchRooms, removeRoom })(Rooms);
