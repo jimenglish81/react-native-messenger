@@ -48,6 +48,7 @@ export function addRoom(userId, name) {
     name,
     date: (new Date()).getTime(),
   });
+
   return {
     type: ADD_ROOM,
     payload: {
@@ -61,6 +62,7 @@ export function fetchMessages(roomId) {
                     .child(roomId)
                     .child('messages')
                     .orderByValue('time');
+
   return {
     type: FETCH_MESSAGES,
     payload: {

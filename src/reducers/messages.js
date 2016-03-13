@@ -10,7 +10,7 @@ export default function(state=INITIAL_STATE, action) {
       action.payload.forEach((snapshot) => {
         messages.push({ ...snapshot.val(), messageId: snapshot.key() });
       });
-      return [ ...state, ...messages ];
+      return messages;
     default:
       return state;
   };
