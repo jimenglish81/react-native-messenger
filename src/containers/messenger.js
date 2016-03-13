@@ -30,7 +30,7 @@ class Messenger extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const themes = this.state.themes;
+    const themes = { ...this.state.themes };
     const { uid } = this.props.user;
     const users = props.messages.reduce((users, { userId }) => {
       if (!users.includes(userId)) {

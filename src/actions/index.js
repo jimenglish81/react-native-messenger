@@ -46,6 +46,7 @@ export function addRoom(userId, name) {
   rooms.push({
     userId,
     name,
+    date: (new Date()).getTime(),
   });
   return {
     type: ADD_ROOM,

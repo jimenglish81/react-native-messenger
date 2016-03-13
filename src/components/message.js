@@ -4,14 +4,14 @@ import React, {
   Text,
   View
 } from 'react-native';
-import { formatDate } from '../utils/date';
+import { formatMessageTime } from '../utils/date';
 import { THEMES } from '../utils/message-themes';
 
 export default class Message extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      time: formatDate(props.time),
+      time: formatMessageTime(props.time),
     };
   }
 
@@ -21,7 +21,7 @@ export default class Message extends Component {
 
   _tick() {
     this.setState({
-      time: formatDate(this.props.time),
+      time: formatMessageTime(this.props.time),
     });
     this._timeout = window.setTimeout(() => this._tick(), 5000);
   }
@@ -43,7 +43,7 @@ export default class Message extends Component {
     const messageTextStyle = {
       color,
     };
-    const userText = {
+    const userTheme = {
       color: highlightColor,
     }
     return (
@@ -53,7 +53,7 @@ export default class Message extends Component {
         </View>
         <View style={[styles.message, alignStyle, messageStyle]}>
           <View>
-            <Text style={userText}>{email}</Text>
+            <Text style={[styles.userText, userTheme]}>{email}</Text>
           </View>
           <Text style={[styles.messageText, messageTextStyle]}>
             {message}
@@ -80,6 +80,9 @@ const styles = StyleSheet.create({
      paddingRight: 15,
      paddingBottom: 10,
      paddingTop: 10,
+   },
+   userText: {
+     fontSize: 12,
    },
    messageText: {
      fontSize: 14,
