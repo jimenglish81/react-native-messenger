@@ -85,7 +85,9 @@ export function enterRoom(roomId) {
 
 export function fetchMessages(roomId) {
   if (currentRoom) {
-    currentRoom.off('child_added');
+    currentRoom
+      .child('messages')
+      .off('child_added');
   }
   currentRoom = rooms.child(roomId);
 
