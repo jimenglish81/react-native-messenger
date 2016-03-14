@@ -12,6 +12,8 @@ export const ENTER_ROOM = 'ENTER_ROOM';
 export const ROOM_REMOVED = 'ROOM_REMOVED';
 export const MESSAGE_ADDED = 'MESSAGE_ADDED';
 
+let currentRoom = null;
+
 export function login(email, password) {
   return {
     type: LOGIN,
@@ -34,6 +36,8 @@ export function signUp(email, password) {
 }
 
 export function fetchRooms() {
+  rooms.off('child_added');
+
   return (dispatch) => {
     rooms
       .orderByKey()
@@ -80,10 +84,13 @@ export function enterRoom(roomId) {
 }
 
 export function fetchMessages(roomId) {
-  const room = rooms.child(roomId);
+  if (currentRoom) {
+    currentRoom.off('child_added');
+  }
+  currentRoom = rooms.child(roomId);
 
   return (dispatch) => {
-    room
+    currentRoom
       .child('messages')
       .orderByValue('time')
       .on('child_added', (snapshot) => {

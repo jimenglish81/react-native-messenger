@@ -7,20 +7,28 @@ import React, {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Swipeout from 'react-native-swipeout';
-import { addRoom, enterRoom, fetchRooms, removeRoom } from '../actions/index';
+import {
+  addRoom,
+  enterRoom,
+  fetchRooms,
+  removeRoom
+} from '../actions/index';
 import Header from '../components/common/header';
 import Btn from '../components/common/btn';
 import Room from '../components/room';
 
 const deleteBtn = {
   text: 'Delete',
-  backgroundColor: 'red',
+  backgroundColor: '#ff0000',
   underlayColor: 'rgba(1, 0, 0, 0.6)',
 };
 
 class Rooms extends Component {
   constructor(props) {
-    const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    const dataSource = new ListView.DataSource({
+                                      rowHasChanged: (r1, r2) => r1 !== r2,
+                                    });
+
     super(props);
     this.state = {
       name: '',
@@ -38,8 +46,19 @@ class Rooms extends Component {
     });
   }
 
-  _addRoom() {
+  onRoomPress(roomId) {
+    this.props.enterRoom(roomId);
+    this.props.navigator.push({
+      name: 'messenger',
+      config: {
+        roomId,
+      },
+    });
+  }
+
+  addRoom() {
     const { name } = this.state;
+
     if (name === '') {
       return;
     }
@@ -58,14 +77,14 @@ class Rooms extends Component {
           onPress: () => this.props.removeRoom(room.roomId),
         },
       ] : [];
+
     return (
       <Swipeout right={btns}
         autoClose='true'
         backgroundColor= 'transparent'>
         <Room {...room}
-          navigator={this.props.navigator}
-          onPress={(roomId) => this.props.enterRoom(roomId)} />
-        </Swipeout>
+          onPress={(roomId) => this.onRoomPress(roomId)} />
+      </Swipeout>
     );
   }
 
@@ -85,11 +104,11 @@ class Rooms extends Component {
           style={styles.input}
           value={this.state.name}
           onChangeText={(name) => this.onChangeText(name)}
-          onSubmitEditing={() => this._addRoom()} />
+          onSubmitEditing={() => this.addRoom()} />
         <View style={styles.btnContainer}>
           <Btn
             text={'+'}
-            onPress={() => this._addRoom()} />
+            onPress={() => this.addRoom()} />
         </View>
       </View>
     );
@@ -114,7 +133,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 50,
     borderTopWidth: 1,
-    borderColor: '#CCC',
+    borderColor: '#ccc',
     flexDirection: 'row',
     paddingLeft: 10,
     paddingRight: 10,
@@ -139,4 +158,5 @@ function mapStateToProps({ user, rooms }) {
   return { user, rooms };
 }
 
-export default connect(mapStateToProps, { addRoom, enterRoom, fetchRooms, removeRoom })(Rooms);
+export default connect(mapStateToProps,
+                        { addRoom, enterRoom, fetchRooms, removeRoom })(Rooms);

@@ -56,7 +56,7 @@ class Messenger extends Component {
 
     this.setState({
       themes,
-    })
+    });
   }
 
   onChangeText(message) {
@@ -92,8 +92,7 @@ class Messenger extends Component {
     return (
       <ListView
         dataSource={this.state.dataSource.cloneWithRows(this.props.messages)}
-        renderRow={(rowData) => this.renderMessage(rowData)}
-      />
+        renderRow={(rowData) => this.renderMessage(rowData)} />
     );
   }
 

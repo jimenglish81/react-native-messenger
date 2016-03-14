@@ -3,10 +3,10 @@ const now = Date.now();
 
 export function formatMessageTime(date) {
   const momentified = moment(date);
+
   if (momentified.isSame(now, 'day')) {
     return momentified.fromNow();
   }
-
   return momentified.calendar();
 }
 

@@ -9,7 +9,7 @@ import React, {
 import { connect } from 'react-redux';
 import { signUp } from '../../actions/index';
 import Btn from '../../components/common/btn';
-import Logo from '../../components/logo';
+import Logo from '../../components/common/logo';
 
 class SignUp extends Component {
   constructor(props) {

@@ -45,7 +45,8 @@ export default class Message extends Component {
     };
     const userTheme = {
       color: highlightColor,
-    }
+    };
+    
     return (
       <View style={[styles.messageContainer, styles[alignment]]}>
         <View style={[styles.timeContainer, alignStyle]}>

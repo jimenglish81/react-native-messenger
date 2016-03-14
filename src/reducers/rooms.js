@@ -6,7 +6,7 @@ export default function(state=INITIAL_STATE, action) {
     case ROOM_ADDED:
       return [ ...state, action.payload ];
     case `${ROOM_REMOVED}_FULFILLED`:
-      return [ ...state.filter((room) => room.roomId !== action.payload.roomId) ];
+      return state.filter((room) => room.roomId !== action.payload.roomId);
     default:
       return state;
   };

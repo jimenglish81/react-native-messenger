@@ -6,7 +6,7 @@ import React, {
 
 export default () => {
   return (
-    <Image style={styles.logo} source={require('../img/person.png')} />
+    <Image style={styles.logo} source={require('../../img/person.png')} />
   );
 };
 

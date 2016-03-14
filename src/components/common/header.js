@@ -15,6 +15,7 @@ export default ({ onBackPress }) => {
       </Text>
     </TouchableOpacity>
   ) : null;
+
   return (
     <View style={styles.headerContainer}>
       {backBtn}

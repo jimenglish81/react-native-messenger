@@ -10,7 +10,7 @@ import React, {
 import { connect } from 'react-redux';
 import { login } from '../../actions/index';
 import Btn from '../../components/common/btn';
-import Logo from '../../components/logo';
+import Logo from '../../components/common/logo';
 
 class Login extends Component {
   constructor(props) {
@@ -68,6 +68,7 @@ class Login extends Component {
         errorMsg,
       });
     };
+
     this.props.login(email, password)
       .payload.promise.then((response) => {
         if (!response.error) {

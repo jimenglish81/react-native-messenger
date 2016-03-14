@@ -19,7 +19,7 @@ export default ({ onPress, text }) => {
 
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: '#1C86EE',
+    backgroundColor: '#1c86ee',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,

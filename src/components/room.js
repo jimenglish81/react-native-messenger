@@ -13,18 +13,12 @@ export default class Room extends Component {
   }
 
   _onPress() {
-    const { roomId } = this.props;
-    this.props.onPress(roomId);
-    this.props.navigator.push({
-      name: 'messenger',
-      config: {
-        roomId,
-      },
-    });
+    this.props.onPress(this.props.roomId);
   }
 
   render() {
     const { name, date } = this.props;
+
     return (
       <TouchableOpacity
         onPress={() => this._onPress()}
