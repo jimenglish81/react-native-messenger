@@ -68,6 +68,7 @@ class Rooms extends Component {
       name: '',
     });
     this.props.addRoom(this.props.user.uid, name);
+    this._input.blur();
   }
 
   renderRoom(room) {
@@ -105,6 +106,7 @@ class Rooms extends Component {
           placeholder="Add room..."
           style={styles.input}
           value={this.state.name}
+          ref={(input) => this._input = input}
           onChangeText={(name) => this.onChangeText(name)}
           onSubmitEditing={() => this.addRoom()} />
         <View style={styles.btnContainer}>

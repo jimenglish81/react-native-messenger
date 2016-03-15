@@ -77,8 +77,8 @@ class Messenger extends Component {
     this.setState({
       message: '',
     });
-
     this.props.addMessage(user, roomId, message);
+    this._input.blur();
   }
 
   renderMessage(message) {
@@ -106,6 +106,7 @@ class Messenger extends Component {
           placeholder="Add message..."
           style={styles.input}
           value={this.state.message}
+          ref={(input) => this._input = input}
           onChangeText={(message) => this.onChangeText(message)}
           onSubmitEditing={() => this._sendMessage()} />
         <View style={styles.btnContainer}>

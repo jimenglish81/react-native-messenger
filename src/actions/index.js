@@ -6,6 +6,7 @@ const fireproof = new Fireproof(firebase);
 const rooms = fireproof.child('rooms');
 
 export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 export const SIGN_UP = 'SIGN_UP';
 export const ROOM_ADDED = 'ROOM_ADDED';
 export const ENTER_ROOM = 'ENTER_ROOM';
@@ -19,6 +20,18 @@ export function login(email, password) {
     type: LOGIN,
     payload: {
       promise: fireproof.authWithPassword({ email, password }),
+    },
+  };
+}
+
+export function logout() {
+  return {
+    type: LOGOUT,
+    payload: {
+      promise: fireproof.unauth()
+        .then(() => {
+          return { loggedOut: true };
+        }),
     },
   };
 }
