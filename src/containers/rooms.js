@@ -164,4 +164,4 @@ function mapStateToProps({ user, rooms }) {
 }
 
 export default connect(mapStateToProps,
-                        { addRoom, enterRoom, fetchRooms, removeRoom })(mixinExtend(Rooms, keyboardOffset));
+        { addRoom, enterRoom, fetchRooms, removeRoom })(mixinExtend(Rooms, keyboardOffset));

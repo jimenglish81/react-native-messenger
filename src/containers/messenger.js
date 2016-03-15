@@ -20,7 +20,9 @@ const availableThemes = Object.keys(THEMES).filter((theme) => theme !== 'GREY');
 
 class Messenger extends Component {
   constructor(props) {
-    const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    const rowChange = { rowHasChanged: (r1, r2) => r1 !== r2 };
+    const dataSource = new ListView.DataSource(rowChange);
+
     super(props);
     this.state = {
       message: '',
@@ -166,4 +168,5 @@ function mapStateToProps({ user, messages }) {
   };
 }
 
-export default connect(mapStateToProps, { addMessage, fetchMessages })(mixinExtend(Messenger, keyboardOffset));
+export default connect(mapStateToProps,
+        { addMessage, fetchMessages })(mixinExtend(Messenger, keyboardOffset));
