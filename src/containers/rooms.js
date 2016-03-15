@@ -3,9 +3,11 @@ import React, {
   StyleSheet,
   View,
   ListView,
-  TextInput
+  TextInput,
+  Animated
 } from 'react-native';
 import { connect } from 'react-redux';
+import { mixinExtend } from 'es2015-mixin';
 import Swipeout from 'react-native-swipeout';
 import {
   addRoom,
@@ -16,6 +18,7 @@ import {
 import Header from '../components/common/header';
 import Btn from '../components/common/btn';
 import Room from '../components/room';
+import keyboardOffset from '../mixins/keyboard-offset';
 
 const deleteBtn = {
   text: 'Delete',
@@ -25,9 +28,8 @@ const deleteBtn = {
 
 class Rooms extends Component {
   constructor(props) {
-    const dataSource = new ListView.DataSource({
-                                      rowHasChanged: (r1, r2) => r1 !== r2,
-                                    });
+    const rowChange = { rowHasChanged: (r1, r2) => r1 !== r2 };
+    const dataSource = new ListView.DataSource(rowChange);
 
     super(props);
     this.state = {
@@ -116,12 +118,12 @@ class Rooms extends Component {
 
   render() {
     return (
-      <View
-        style={styles.container}>
+      <Animated.View
+        style={[styles.container, { marginBottom: this.state.keyboardOffset }]}>
         <Header />
         {this.renderRooms()}
         {this.renderFooter()}
-      </View>
+      </Animated.View>
     );
   }
 }
@@ -129,6 +131,7 @@ class Rooms extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
   },
   inputContainer: {
     height: 50,
@@ -159,4 +162,4 @@ function mapStateToProps({ user, rooms }) {
 }
 
 export default connect(mapStateToProps,
-                        { addRoom, enterRoom, fetchRooms, removeRoom })(Rooms);
+                        { addRoom, enterRoom, fetchRooms, removeRoom })(mixinExtend(Rooms, keyboardOffset));

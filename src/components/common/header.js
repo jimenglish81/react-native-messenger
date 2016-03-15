@@ -28,7 +28,7 @@ export default ({ onBackPress }) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 60,
+    height: 70,
     flexDirection: 'row',
     paddingLeft: 10,
     paddingRight: 10,
@@ -46,10 +46,10 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     alignItems: 'flex-start',
-    height: 60,
+    height: 70,
     flexDirection: 'row',
   },
   backBtnText: {
-    fontSize: 16,
+    fontSize: 18,
   }
 });

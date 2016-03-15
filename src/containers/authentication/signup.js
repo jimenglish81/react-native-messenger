@@ -4,12 +4,15 @@ import React, {
   Text,
   View,
   TextInput,
-  TouchableHighlight
+  TouchableHighlight,
+  Animated
 } from 'react-native';
 import { connect } from 'react-redux';
+import { mixinExtend } from 'es2015-mixin';
 import { signUp } from '../../actions/index';
 import Btn from '../../components/common/btn';
 import Logo from '../../components/common/logo';
+import keyboardOffset from '../../mixins/keyboard-offset';
 
 class SignUp extends Component {
   constructor(props) {
@@ -24,7 +27,7 @@ class SignUp extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <Animated.View style={[styles.container, { marginBottom: this.state.screenOffset }]}>
         <View style={styles.logoContainer}>
           <Logo />
         </View>
@@ -65,7 +68,7 @@ class SignUp extends Component {
             <Btn text={'Sign Up'} onPress={() => this.onSignUpPress()} />
           </View>
         </View>
-      </View>
+      </Animated.View>
     );
   }
 
@@ -147,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { signUp })(SignUp);
+export default connect(null, { signUp })(mixinExtend(SignUp, keyboardOffset));

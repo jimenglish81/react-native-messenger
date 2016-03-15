@@ -4,14 +4,17 @@ import React, {
   Text,
   View,
   TextInput,
-  ListView
+  ListView,
+  Animated
 } from 'react-native';
 import { connect } from 'react-redux';
+import { mixinExtend } from 'es2015-mixin';
 import { addMessage, fetchMessages } from '../actions/index';
 import Btn from '../components/common/btn';
 import Header from '../components/common/header';
 import Message from '../components/message';
 import { THEMES } from '../utils/message-themes';
+import keyboardOffset from '../mixins/keyboard-offset';
 
 const availableThemes = Object.keys(THEMES).filter((theme) => theme !== 'GREY');
 
@@ -116,12 +119,12 @@ class Messenger extends Component {
 
   render() {
     return (
-      <View
-        style={styles.container}>
+      <Animated.View
+        style={[styles.container, { marginBottom: this.state.keyboardOffset }]}>
         <Header onBackPress={() => this.props.navigator.pop()} />
         {this.renderMessages()}
         {this.renderInput()}
-      </View>
+      </Animated.View>
     );
   }
 }
@@ -129,11 +132,12 @@ class Messenger extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
   },
   inputContainer: {
     height: 50,
     borderTopWidth: 1,
-    borderColor: '#CCC',
+    borderColor: '#ccc',
     flexDirection: 'row',
     paddingLeft: 10,
     paddingRight: 10,
@@ -161,4 +165,4 @@ function mapStateToProps({ user, messages }) {
   };
 }
 
-export default connect(mapStateToProps, { addMessage, fetchMessages })(Messenger);
+export default connect(mapStateToProps, { addMessage, fetchMessages })(mixinExtend(Messenger, keyboardOffset));

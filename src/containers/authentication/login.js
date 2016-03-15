@@ -5,12 +5,15 @@ import React, {
   View,
   TextInput,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  Animated
 } from 'react-native';
 import { connect } from 'react-redux';
+import { mixinExtend } from 'es2015-mixin';
 import { login } from '../../actions/index';
 import Btn from '../../components/common/btn';
 import Logo from '../../components/common/logo';
+import keyboardOffset from '../../mixins/keyboard-offset';
 
 class Login extends Component {
   constructor(props) {
@@ -24,7 +27,7 @@ class Login extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <Animated.View style={[styles.container, { marginBottom: this.state.screenOffset }]}>
         <View style={styles.logoContainer}>
           <Logo />
         </View>
@@ -57,7 +60,7 @@ class Login extends Component {
             <Btn text={'Login'} onPress={() => this.onLoginPress()} />
           </View>
         </View>
-      </View>
+      </Animated.View>
     );
   }
 
@@ -91,13 +94,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   logoContainer: {
-    flex: 3,
+    flex: 2.5,
     backgroundColor: '#1c86ee',
     justifyContent: 'center',
     alignItems: 'center',
   },
   loginContainer: {
-    flex: 1,
+    flex: 1.5,
     backgroundColor: 'transparent',
   },
   inputContainer: {
@@ -135,4 +138,4 @@ function mapStateToProps(state) {
   return { user: state.user };
 }
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login })(mixinExtend(Login, keyboardOffset));
