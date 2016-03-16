@@ -124,7 +124,9 @@ class Messenger extends Component {
     return (
       <Animated.View
         style={[styles.container, { marginBottom: this.state.keyboardOffset }]}>
-        <Header onBackPress={() => this.props.navigator.pop()} />
+        <Header
+          text={this.props.currentRoom.name}
+          onBtnPress={() => this.props.navigator.pop()} />
         {this.renderMessages()}
         {this.renderInput()}
       </Animated.View>
@@ -161,10 +163,11 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps({ user, messages }) {
+function mapStateToProps({ user, messages, currentRoom }) {
   return {
     user,
     messages,
+    currentRoom,
   };
 }
 

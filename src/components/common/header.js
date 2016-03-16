@@ -5,13 +5,13 @@ import React, {
   TouchableOpacity
 } from 'react-native';
 
-export default ({ onBackPress }) => {
-  const backBtn = onBackPress ? (
+export default ({ onBtnPress, btnText='<', text='Messenger' }) => {
+  const backBtn = onBtnPress ? (
     <TouchableOpacity
-      style={styles.backBtn}
-      onPress={onBackPress}>
-      <Text style={[styles.headerText, styles.backBtnText]}>
-        {'<'}
+      style={styles.btn}
+      onPress={onBtnPress}>
+      <Text style={[styles.headerText, styles.btnText]}>
+        {btnText}
       </Text>
     </TouchableOpacity>
   ) : null;
@@ -20,7 +20,7 @@ export default ({ onBackPress }) => {
     <View style={styles.headerContainer}>
       {backBtn}
       <Text style={[styles.titleText, styles.headerText]}>
-        Messenger
+        {text}
       </Text>
     </View>
   );
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
   titleText: {
     textAlign: 'center',
   },
-  backBtn: {
+  btn: {
     alignItems: 'flex-start',
     height: 70,
     flexDirection: 'row',
   },
-  backBtnText: {
+  btnText: {
     fontSize: 18,
   }
 });

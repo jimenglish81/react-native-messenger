@@ -13,7 +13,8 @@ import {
   addRoom,
   enterRoom,
   fetchRooms,
-  removeRoom
+  removeRoom,
+  logout
 } from '../actions/index';
 import Header from '../components/common/header';
 import Btn from '../components/common/btn';
@@ -56,6 +57,11 @@ class Rooms extends Component {
         roomId,
       },
     });
+  }
+
+  onLogoutPress() {
+    this.props.logout();
+    this.props.navigator.immediatelyResetRouteStack([{ name: 'login' }]);
   }
 
   addRoom() {
@@ -122,7 +128,9 @@ class Rooms extends Component {
     return (
       <Animated.View
         style={[styles.container, { marginBottom: this.state.keyboardOffset }]}>
-        <Header />
+        <Header
+          text={'Rooms'}
+          onBtnPress={() => this.onLogoutPress()} />
         {this.renderRooms()}
         {this.renderFooter()}
       </Animated.View>
@@ -164,4 +172,4 @@ function mapStateToProps({ user, rooms }) {
 }
 
 export default connect(mapStateToProps,
-        { addRoom, enterRoom, fetchRooms, removeRoom })(mixinExtend(Rooms, keyboardOffset));
+        { addRoom, enterRoom, fetchRooms, removeRoom, logout })(mixinExtend(Rooms, keyboardOffset));

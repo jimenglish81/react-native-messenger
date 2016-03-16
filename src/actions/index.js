@@ -28,10 +28,7 @@ export function logout() {
   return {
     type: LOGOUT,
     payload: {
-      promise: fireproof.unauth()
-        .then(() => {
-          return { loggedOut: true };
-        }),
+      promise: fireproof.unauth(),
     },
   };
 }
@@ -90,9 +87,18 @@ export function removeRoom(roomId) {
 }
 
 export function enterRoom(roomId) {
+  currentRoom = rooms.child(roomId);
+
   return {
     type: ENTER_ROOM,
-    payload: roomId,
+    payload: {
+      promise:  currentRoom
+          .on('value')
+          .then((snapshot) => {
+            const { name, userId } = snapshot.val();
+            return { name, userId };
+          }),
+    },
   };
 }
 
@@ -102,7 +108,6 @@ export function fetchMessages(roomId) {
       .child('messages')
       .off('child_added');
   }
-  currentRoom = rooms.child(roomId);
 
   return (dispatch) => {
     currentRoom
