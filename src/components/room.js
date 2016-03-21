@@ -3,7 +3,8 @@ import React, {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  PropTypes
 } from 'react-native';
 import { formatRoomDate } from '../utils/date';
 
@@ -37,6 +38,12 @@ export default class Room extends Component {
     );
   }
 }
+
+Room.propTypes = {
+  name: PropTypes.string.isRequired,
+  date: PropTypes.number.isRequired,
+  roomId: PropTypes.string.isRequired,
+};
 
 const styles = StyleSheet.create({
   room: {

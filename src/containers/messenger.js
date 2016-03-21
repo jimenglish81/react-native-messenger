@@ -5,7 +5,8 @@ import React, {
   View,
   TextInput,
   ListView,
-  Animated
+  Animated,
+  PropTypes,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { mixinExtend } from 'es2015-mixin';
@@ -133,6 +134,16 @@ class Messenger extends Component {
     );
   }
 }
+
+Messenger.propTypes = {
+  navigator: PropTypes.object.isRequired,
+  addMessage: PropTypes.func.isRequired,
+  fetchMessages: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  roomId: PropTypes.string.isRequired,
+  messages: React.PropTypes.arrayOf(PropTypes.object),
+  currentRoom: PropTypes.object,
+};
 
 const styles = StyleSheet.create({
   container: {

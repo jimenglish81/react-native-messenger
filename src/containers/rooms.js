@@ -4,7 +4,8 @@ import React, {
   View,
   ListView,
   TextInput,
-  Animated
+  Animated,
+  PropTypes
 } from 'react-native';
 import { connect } from 'react-redux';
 import { mixinExtend } from 'es2015-mixin';
@@ -137,6 +138,17 @@ class Rooms extends Component {
     );
   }
 }
+
+Rooms.propTypes = {
+  navigator: PropTypes.object.isRequired,
+  addRoom: PropTypes.func.isRequired,
+  removeRoom: PropTypes.func.isRequired,
+  fetchRooms: PropTypes.func.isRequired,
+  enterRoom: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  rooms: PropTypes.array,
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -2,7 +2,8 @@ import React, {
   Component,
   StyleSheet,
   Text,
-  View
+  View,
+  PropTypes
 } from 'react-native';
 import { formatMessageTime } from '../utils/date';
 import { THEMES } from '../utils/message-themes';
@@ -46,7 +47,7 @@ export default class Message extends Component {
     const userTheme = {
       color: highlightColor,
     };
-    
+
     return (
       <View style={[styles.messageContainer, styles[alignment]]}>
         <View style={[styles.timeContainer, alignStyle]}>
@@ -68,6 +69,14 @@ export default class Message extends Component {
     window.clearTimeout(this._timeout);
   }
 }
+
+Message.propTypes = {
+  alignment: PropTypes.string,
+  theme: PropTypes.object,
+  message: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  time: PropTypes.number.isRequired,
+};
 
 const styles = StyleSheet.create({
   messageContainer: {

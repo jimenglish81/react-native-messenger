@@ -5,7 +5,8 @@ import React, {
   View,
   TextInput,
   TouchableHighlight,
-  Animated
+  Animated,
+  PropTypes
 } from 'react-native';
 import { connect } from 'react-redux';
 import { mixinExtend } from 'es2015-mixin';
@@ -13,15 +14,21 @@ import { signUp } from '../../actions/index';
 import Btn from '../../components/common/btn';
 import Logo from '../../components/common/logo';
 import keyboardOffset from '../../mixins/keyboard-offset';
+import { validateEmail, validatePassword } from '../../utils/validation';
+
+const INITIAL_STATE = {
+  email: '',
+  password: '',
+  passwordConfirmation: '',
+  errorMsg: '',
+  isSubmitting: false,
+};
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-      errorMsg: '',
+      ...INITIAL_STATE,
     };
   }
 
@@ -34,23 +41,26 @@ class SignUp extends Component {
         <View style={styles.signupContainer}>
           <View style={styles.inputContainer}>
             <TextInput
+              ref={(node) => this._email = node}
               value={this.state.email}
-              onChangeText={(email) => this.setState({ email })}
+              onChangeText={(value) => this.setState({ email: value.trim() })}
               placeholder={'Email'}
               style={styles.input} />
           </View>
           <View style={styles.inputContainer}>
             <TextInput
+              ref={(node) => this._password = node}
               value={this.state.password}
-              onChangeText={(password) => this.setState({ password })}
+              onChangeText={(value) => this.setState({ password: value.trim() })}
               secureTextEntry={true}
               placeholder={'Password'}
               style={styles.input} />
           </View>
           <View style={styles.inputContainer}>
             <TextInput
+              ref={(node) => this._passwordConfirmation = node}
               value={this.state.passwordConfirmation}
-              onChangeText={(passwordConfirmation) => this.setState({ passwordConfirmation })}
+              onChangeText={(value) => this.setState({ passwordConfirmation: value.trim() })}
               secureTextEntry={true}
               placeholder={'Password Confirmation'}
               style={styles.input} />
@@ -72,36 +82,81 @@ class SignUp extends Component {
     );
   }
 
-  onSignUpPress() {
-    const { email, password, passwordConfirmation } = this.state;
-    const errorCb = (errorMsg) => {
-      this.setState({
-        errorMsg,
-      });
-    };
+  signuo() {
+    this.props.signUp(email, password)
+      .payload.promise.then((response) => {
+        if (!response.error) {
+          this.props.navigator.immediatelyResetRouteStack([{ name: 'rooms' }]);
+        } else {
+          this.onError(response.payload.message);
+        }
+      }, () => this.onError('There has been a problem.'));
+  }
 
-    if (password !== passwordConfirmation) {
-      return this.setState({
+  onError(errorMsg) {
+    this.setState({
+      errorMsg,
+      isSubmitting: false,
+    });
+  }
+
+  onSignUpPress() {
+    const {
+        email,
+        password,
+        passwordConfirmation,
+        isSubmitting
+      } = this.state;
+
+    if (email === '' ||
+        password === '' ||
+        passwordConfirmation === '' ||
+        isSubmitting) {
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      this.setState({
+        email: '',
+        password: '',
+        passwordConfirmation: '',
+        errorMsg: 'Your email is not valid.',
+      });
+      this._email.focus();
+    } else if (!validatePassword(password)) {
+      this.setState({
+        password: '',
+        passwordConfirmation: '',
+        errorMsg: 'Your password must be between 6-8 characters and contain letters and numbers.',
+      });
+      this._password.focus();
+    } else if (password !== passwordConfirmation) {
+      this.setState({
         password: '',
         passwordConfirmation: '',
         errorMsg: 'Your passwords do not match.',
       });
+      this._password.focus();
     } else {
-      this.props.signUp(email, password)
-        .payload.promise.then((response) => {
-          if (!response.error) {
-            this.props.navigator.immediatelyResetRouteStack([{ name: 'rooms' }]);
-          } else {
-            errorCb('Please check your network connection.');
-          }
-        }, () => errorCb('There has been a problem.'));
+      this.setState({
+        isSubmitting: true,
+      });
+      this.signup(email, password, passwordConfirmation);
     }
   }
 
   onLoginPress() {
+    this.setState({
+      ...INITIAL_STATE,
+    });
     this.props.navigator.pop();
   }
 }
+
+SignUp.propTypes = {
+  navigator: PropTypes.object.isRequired,
+  signUp: PropTypes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {

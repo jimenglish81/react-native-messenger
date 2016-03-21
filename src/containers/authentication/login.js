@@ -6,7 +6,8 @@ import React, {
   TextInput,
   Image,
   TouchableHighlight,
-  Animated
+  Animated,
+  PropTypes
 } from 'react-native';
 import { connect } from 'react-redux';
 import { mixinExtend } from 'es2015-mixin';
@@ -15,13 +16,18 @@ import Btn from '../../components/common/btn';
 import Logo from '../../components/common/logo';
 import keyboardOffset from '../../mixins/keyboard-offset';
 
+const INITIAL_STATE = {
+  email: '',
+  password: '',
+  errorMsg: '',
+  isSubmitting: false,
+};
+
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
-      errorMsg: '',
+      ...INITIAL_STATE,
     };
   }
 
@@ -35,14 +41,14 @@ class Login extends Component {
           <View style={styles.inputContainer}>
             <TextInput
               value={this.state.email}
-              onChangeText={(email) => this.setState({ email })}
+              onChangeText={(value) => this.setState({ email: value.trim() })}
               placeholder={'Email'}
               style={styles.input} />
           </View>
           <View style={styles.inputContainer}>
             <TextInput
               value={this.state.password}
-              onChangeText={(password) => this.setState({ password })}
+              onChangeText={(value) => this.setState({ password: value.trim()  })}
               secureTextEntry={true}
               placeholder={'Password'}
               style={styles.input} />
@@ -64,28 +70,51 @@ class Login extends Component {
     );
   }
 
-  onLoginPress() {
-    const { email, password } = this.state;
-    const errorCb = (errorMsg) => {
-      this.setState({
-        errorMsg,
-      });
-    };
-
+  login(email, password) {
     this.props.login(email, password)
       .payload.promise.then((response) => {
         if (!response.error) {
           this.props.navigator.immediatelyResetRouteStack([{ name: 'rooms' }]);
         } else {
-          errorCb('Please check your network connection.');
+          this.onError(response.payload.message);
         }
-      }, () => errorCb('There has been a problem.'));
+      }, () => this.onError('There has been a problem.'));
+  }
+
+  onError(errorMsg) {
+    this.setState({
+      errorMsg,
+      isSubmitting: false,
+    });
+  }
+
+  onLoginPress() {
+    const { email, password, isSubmitting } = this.state;
+    if (email === '' ||
+        password === '' ||
+        isSubmitting) {
+      return;
+    }
+
+    this.setState({
+      isSubmitting: true,
+    });
+
+    this.login(email, password);
   }
 
   onSignUpPress() {
+    this.setState({
+      ...INITIAL_STATE
+    });
     this.props.navigator.push({ name: 'signup' });
   }
 }
+
+Login.propTypes = {
+  navigator: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {
