@@ -97,6 +97,7 @@ class Messenger extends Component {
   renderMessages() {
     return (
       <ListView
+        ref={(listView) => { this._listView =  listView; }}
         dataSource={this.state.dataSource.cloneWithRows(this.props.messages)}
         renderRow={(rowData) => this.renderMessage(rowData)} />
     );

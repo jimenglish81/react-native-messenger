@@ -47,12 +47,18 @@ export function signUp(email, password) {
 
 export function fetchRooms() {
   rooms.off('child_added');
+  rooms.off('child_removed');
 
   return (dispatch) => {
-    rooms
-      .orderByKey()
+    const currentRooms = rooms.orderByKey();
+
+    currentRooms
       .on('child_added', (snapshot) => {
         dispatch(roomAdded({ ...snapshot.val(), roomId: snapshot.key() }));
+      });
+    currentRooms
+      .on('child_removed', (snapshot) => {
+        dispatch(roomRemoved({ ...snapshot.val(), roomId: snapshot.key() }));
       });
   };
 }
@@ -75,14 +81,15 @@ export function addRoom(userId, name) {
 }
 
 export function removeRoom(roomId) {
+  return () => {
+    rooms.child(roomId).remove();
+  };
+}
+
+export function roomRemoved(payload) {
   return {
     type: ROOM_REMOVED,
-    payload: {
-      promise: rooms.child(roomId).remove()
-        .then(() => {
-          return { roomId };
-        }),
-    },
+    payload,
   };
 }
 

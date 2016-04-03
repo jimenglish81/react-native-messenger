@@ -43,6 +43,7 @@ Room.propTypes = {
   name: PropTypes.string.isRequired,
   date: PropTypes.number.isRequired,
   roomId: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

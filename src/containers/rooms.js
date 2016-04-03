@@ -5,7 +5,8 @@ import React, {
   ListView,
   TextInput,
   Animated,
-  PropTypes
+  PropTypes,
+  InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
 import { mixinExtend } from 'es2015-mixin';
@@ -84,7 +85,11 @@ class Rooms extends Component {
     const btns = ownsRoom ? [
         {
           ...deleteBtn,
-          onPress: () => this.props.removeRoom(room.roomId),
+          onPress: () => {
+            InteractionManager.runAfterInteractions(() => {
+              this.props.removeRoom(room.roomId);
+            }),
+          },
         },
       ] : [];
 
