@@ -88,7 +88,7 @@ class Rooms extends Component {
           onPress: () => {
             InteractionManager.runAfterInteractions(() => {
               this.props.removeRoom(room.roomId);
-            }),
+            });
           },
         },
       ] : [];
